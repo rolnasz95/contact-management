@@ -58,6 +58,11 @@ public class Contact
         return email;
     }
 
+    public String getName()
+    {
+        return firstName + " " + lastName;
+    }
+
     public void setLastName(String lastName)
     {
         this.lastName = lastName;

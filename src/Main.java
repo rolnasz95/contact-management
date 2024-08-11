@@ -10,8 +10,6 @@ public class Main
 
         ContactManager manager = new ContactManager();
 
-        Contact contact;
-
         // Control variable for the menu
         boolean running = true;
 
@@ -27,7 +25,7 @@ public class Main
             switch (choice)
             {
                 case 1:
-                    contact = manager.create();
+                    Contact contact = manager.create();
                     manager.add(contact, contacts);
                     break;
                 case 2:

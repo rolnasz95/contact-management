@@ -20,7 +20,7 @@ public class ContactManager
             {
                 if (contact.getID() == id)
                 {
-                    System.out.println("Removing " + contact.getFirstName() + " " + contact.getLastName());
+                    System.out.println("Removing " + contact.getName());
                     contacts.remove(id, contact);
                 }
             }
@@ -29,8 +29,6 @@ public class ContactManager
         {
             System.out.println("Could not find contact with that ID. Try again.");
         }
-
-        keyboard.close();
     }
 
     public Contact create()
@@ -58,12 +56,10 @@ public class ContactManager
         input = keyboard.nextLine();
         contact.setEmail(input);
 
-        keyboard.close();
-
         return contact;
     }
 
-    public boolean search(int id, HashMap<Integer, Contact> contacts)
+    private boolean search(int id, HashMap<Integer, Contact> contacts)
     {
         for (Contact contact : contacts.values())
         {
