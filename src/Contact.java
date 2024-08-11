@@ -34,12 +34,10 @@ public class Contact
     {
         return id;
     }
-
     public String getLastName()
     {
         return lastName;
     }
-
     public String getFirstName()
     {
         return firstName;
@@ -64,7 +62,6 @@ public class Contact
     {
         this.lastName = lastName;
     }
-
     public void setFirstName(String firstName)
     {
         this.firstName = firstName;
