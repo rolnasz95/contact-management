@@ -1,5 +1,8 @@
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.io.File;
+import java.io.FileWriter;
 
 public class ContactManager
 {
@@ -57,6 +60,29 @@ public class ContactManager
         contact.setEmail(input);
 
         return contact;
+    }
+
+    public void export(HashMap<Integer, Contact> contacts)
+    {
+        if (contacts.isEmpty())
+        {
+            System.out.println("No contacts to write. Add some maybe?");
+            return;
+        }
+
+        File file = new File("resources/contacts.txt");
+
+        try (FileWriter fileWriter = new FileWriter(file))
+        {
+            for (Contact contact : contacts.values())
+            {
+                fileWriter.write(contact + "\n");
+            }
+        }
+        catch (IOException e)
+        {
+            System.out.println("Something happened: " + e.getMessage());
+        }
     }
 
     private boolean search(int id, HashMap<Integer, Contact> contacts)

@@ -32,7 +32,7 @@ public class Main
                     manager.remove(contacts);
                     break;
                 case 3:
-                    // TODO
+                    manager.export(contacts);
                     break;
                 case 4:
                     running = false;
