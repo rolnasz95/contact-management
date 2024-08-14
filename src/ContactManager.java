@@ -15,7 +15,7 @@ public class ContactManager
         System.out.print("Specify an ID: ");
         int id = keyboard.nextInt();
 
-        if (search(id, contacts))
+        if (searchContact(id, contacts))
         {
             for (Contact contact : contacts.values())
             {
@@ -32,7 +32,7 @@ public class ContactManager
         }
     }
 
-    public Contact create()
+    public Contact createContact()
     {
         Scanner keyboard = new Scanner(System.in);
         Contact contact = new Contact();
@@ -60,7 +60,7 @@ public class ContactManager
         return contact;
     }
 
-    public void export(HashMap<Integer, Contact> contacts)
+    public void exportContacts(HashMap<Integer, Contact> contacts)
     {
         if (contacts.isEmpty())
         {
@@ -94,7 +94,7 @@ public class ContactManager
     {
         ContactManager manager = new ContactManager();
 
-        String line = "";
+        String line;
         String delimiter = ",";
 
         if (!contacts.isEmpty())
@@ -113,7 +113,7 @@ public class ContactManager
                     while ((line = reader.readLine()) != null)
                     {
                         String[] contactList = line.split(delimiter);
-                        Contact contact = manager.create(contactList);
+                        Contact contact = manager.createContact(contactList);
 
                         contacts.put(contact.getID(), contact);
                     }
@@ -136,7 +136,7 @@ public class ContactManager
                 while ((line = reader.readLine()) != null)
                 {
                     String[] contactList = line.split(delimiter);
-                    Contact contact = manager.create(contactList);
+                    Contact contact = manager.createContact(contactList);
 
                     contacts.put(contact.getID(), contact);
                 }
@@ -150,12 +150,28 @@ public class ContactManager
         }
     }
 
-    private Contact create(String[] contactList)
+    public void displayContacts(HashMap<Integer, Contact> contacts)
+    {
+        if (contacts.isEmpty())
+        {
+            System.out.println("Contact list is empty.");
+            return;
+        }
+
+        System.out.println("ID\t\tName\t\tAddress\t\t\t\tPhone\t\t\tEmail");
+
+        for (Contact contact : contacts.values())
+        {
+            System.out.println(contact.getID() + " | " + contact.getName() + " | " + contact.getAddress() + " | " + contact.getPhoneNumber() + " | " + contact.getEmail());
+        }
+    }
+
+    private Contact createContact(String[] contactList)
     {
         return new Contact(contactList[0], contactList[1], contactList[2], contactList[3], contactList[4]);
     }
 
-    private boolean search(int id, HashMap<Integer, Contact> contacts)
+    private boolean searchContact(int id, HashMap<Integer, Contact> contacts)
     {
         for (Contact contact : contacts.values())
         {

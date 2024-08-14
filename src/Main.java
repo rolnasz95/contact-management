@@ -25,7 +25,7 @@ public class Main
             switch (choice)
             {
                 case 1:
-                    Contact contact = manager.create();
+                    Contact contact = manager.createContact();
                     manager.add(contact, contacts);
                     break;
                 case 2:
@@ -35,9 +35,12 @@ public class Main
                     manager.importContacts(contacts);
                     break;
                 case 4:
-                    manager.export(contacts);
+                    manager.exportContacts(contacts);
                     break;
                 case 5:
+                    manager.displayContacts(contacts);
+                    break;
+                case 6:
                     running = false;
                     break;
                 default:
@@ -53,6 +56,7 @@ public class Main
         System.out.println("2. Delete existing contact");
         System.out.println("3. Load contacts from file");
         System.out.println("4. Write contacts to file");
-        System.out.println("5. Exit");
+        System.out.println("5. Display all contacts");
+        System.out.println("6. Exit");
     }
 }
