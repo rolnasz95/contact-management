@@ -19,12 +19,12 @@ public class Contact
         this.email = "";
     }
 
-    public Contact(String lastName, String firstName, String phoneNumber, String address, String email)
+    public Contact(String firstName, String lastName, String phoneNumber, String address, String email)
     {
         // Value of id becomes the next available number
         this.id = nextId++;
-        this.lastName = lastName;
         this.firstName = firstName;
+        this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.address = address;
         this.email = email;

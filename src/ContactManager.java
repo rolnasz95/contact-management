@@ -1,8 +1,6 @@
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Scanner;
-import java.io.File;
-import java.io.FileWriter;
 
 public class ContactManager
 {
@@ -39,13 +37,13 @@ public class ContactManager
         Scanner keyboard = new Scanner(System.in);
         Contact contact = new Contact();
 
-        System.out.print("Enter last name: ");
-        String input = keyboard.nextLine();
-        contact.setLastName(input);
-
         System.out.print("Enter first name: ");
-        input = keyboard.nextLine();
+        String input = keyboard.nextLine();
         contact.setFirstName(input);
+
+        System.out.print("Enter last name: ");
+        input = keyboard.nextLine();
+        contact.setLastName(input);
 
         System.out.print("Enter phone number: ");
         input = keyboard.nextLine();
@@ -60,6 +58,11 @@ public class ContactManager
         contact.setEmail(input);
 
         return contact;
+    }
+
+    public Contact create(String[] contactList)
+    {
+        return new Contact(contactList[0], contactList[1], contactList[2], contactList[3], contactList[4]);
     }
 
     public void export(HashMap<Integer, Contact> contacts)
@@ -81,7 +84,69 @@ public class ContactManager
         }
         catch (IOException e)
         {
-            System.out.println("Something happened: " + e.getMessage());
+            System.out.println(e.getMessage());
+        }
+
+        System.out.println("Contacts written successfully.");
+    }
+
+    public void importContacts(HashMap<Integer, Contact> contacts)
+    {
+        ContactManager manager = new ContactManager();
+
+        String line = "";
+        String delimiter = ",";
+
+        if (!contacts.isEmpty())
+        {
+            Scanner keyboard = new Scanner(System.in);
+            System.out.print("List is not empty. Do you want to import and overwrite existing list? (Y/N): ");
+            String choice = keyboard.nextLine();
+            choice = choice.toLowerCase();
+
+            if (choice.charAt(0) == 'y')
+            {
+                File file = new File("resources/preloaded_contacts.csv");
+
+                try (BufferedReader reader = new BufferedReader(new FileReader(file)))
+                {
+                    while ((line = reader.readLine()) != null)
+                    {
+                        String[] contactList = line.split(delimiter);
+                        Contact contact = manager.create(contactList);
+
+                        contacts.put(contact.getID(), contact);
+                    }
+                }
+                catch (IOException e)
+                {
+                    System.out.println(e.getMessage());
+                }
+            }
+            else
+            {
+                System.out.println("Returning to main menu.");
+            }
+        }
+        else
+        {
+            File file = new File("resources/preloaded_contacts.csv");
+            try (BufferedReader reader = new BufferedReader(new FileReader(file)))
+            {
+                while ((line = reader.readLine()) != null)
+                {
+                    String[] contactList = line.split(delimiter);
+                    Contact contact = manager.create(contactList);
+
+                    contacts.put(contact.getID(), contact);
+                }
+            }
+            catch (IOException e)
+            {
+                System.out.println(e.getMessage());
+            }
+
+            System.out.println("Successfully loaded the contacts into the program.");
         }
     }
 
