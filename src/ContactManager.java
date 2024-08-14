@@ -21,7 +21,7 @@ public class ContactManager
             {
                 if (contact.getID() == id)
                 {
-                    System.out.println("Removing " + contact.getName());
+                    System.out.println("Removing: " + contact.getName());
                     contacts.remove(id, contact);
                 }
             }
