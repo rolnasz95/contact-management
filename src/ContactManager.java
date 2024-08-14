@@ -60,11 +60,6 @@ public class ContactManager
         return contact;
     }
 
-    public Contact create(String[] contactList)
-    {
-        return new Contact(contactList[0], contactList[1], contactList[2], contactList[3], contactList[4]);
-    }
-
     public void export(HashMap<Integer, Contact> contacts)
     {
         if (contacts.isEmpty())
@@ -73,13 +68,18 @@ public class ContactManager
             return;
         }
 
-        File file = new File("resources/contacts.txt");
+        File file = new File("resources/contacts.csv");
 
-        try (FileWriter fileWriter = new FileWriter(file))
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file)))
         {
             for (Contact contact : contacts.values())
             {
-                fileWriter.write(contact + "\n");
+                writer.write(contact.getFirstName() + ",");
+                writer.write(contact.getLastName() + ",");
+                writer.write(contact.getPhoneNumber() + ",");
+                writer.write(contact.getAddress() + ",");
+                writer.write(contact.getEmail());
+                writer.newLine();
             }
         }
         catch (IOException e)
@@ -148,6 +148,11 @@ public class ContactManager
 
             System.out.println("Successfully loaded the contacts into the program.");
         }
+    }
+
+    private Contact create(String[] contactList)
+    {
+        return new Contact(contactList[0], contactList[1], contactList[2], contactList[3], contactList[4]);
     }
 
     private boolean search(int id, HashMap<Integer, Contact> contacts)
