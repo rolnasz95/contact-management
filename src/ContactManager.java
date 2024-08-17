@@ -166,6 +166,19 @@ public class ContactManager
         }
     }
 
+    public String search(int id, HashMap<Integer, Contact> contacts)
+    {
+        for (Contact contact : contacts.values())
+        {
+            if (contact.getID() == id)
+            {
+                return contact.toString();
+            }
+        }
+
+        return "Could not find contact with ID #" + id;
+    }
+
     private Contact createContact(String[] contactList)
     {
         return new Contact(contactList[0], contactList[1], contactList[2], contactList[3], contactList[4]);
