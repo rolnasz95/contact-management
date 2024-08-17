@@ -166,8 +166,13 @@ public class ContactManager
         }
     }
 
-    public String search(int id, HashMap<Integer, Contact> contacts)
+    public String searchContact(HashMap<Integer, Contact> contacts)
     {
+        Scanner keyboard = new Scanner(System.in);
+
+        System.out.print("Enter a contact ID: ");
+        int id = keyboard.nextInt();
+
         for (Contact contact : contacts.values())
         {
             if (contact.getID() == id)
