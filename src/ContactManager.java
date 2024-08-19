@@ -34,19 +34,41 @@ public class ContactManager
 
     public Contact createContact()
     {
+        InputValidation validation = new InputValidation();
+
         Scanner keyboard = new Scanner(System.in);
         Contact contact = new Contact();
 
         System.out.print("Enter first name: ");
         String input = keyboard.nextLine();
+
+        while (!validation.validateName(input))
+        {
+            System.out.print("Your name must only contain letters: ");
+            input = keyboard.nextLine();
+        }
+
         contact.setFirstName(input);
 
         System.out.print("Enter last name: ");
         input = keyboard.nextLine();
         contact.setLastName(input);
 
+        while (!validation.validateName(input))
+        {
+            System.out.print("Your name must only contain letters: ");
+            input = keyboard.nextLine();
+        }
+
         System.out.print("Enter phone number: ");
         input = keyboard.nextLine();
+
+        while (!validation.validatePhone(input))
+        {
+            System.out.print("Phone number must be 12 characters long and must use the format of 'XXX-XXX-XXXX': ");
+            input = keyboard.nextLine();
+        }
+
         contact.setPhoneNumber(input);
 
         System.out.print("Enter address: ");
@@ -55,6 +77,13 @@ public class ContactManager
 
         System.out.print("Enter email: ");
         input = keyboard.nextLine();
+
+        while (!validation.validateEmail(input))
+        {
+            System.out.print("Must be a valid email address: ");
+            input = keyboard.nextLine();
+        }
+
         contact.setEmail(input);
 
         return contact;
