@@ -10,8 +10,7 @@ public class Contact
 
     public Contact()
     {
-        // Value of id becomes the next available number
-        this.id = nextId++;
+        this.id = nextId++;             // Value of id becomes the next available number
         this.lastName = "";
         this.firstName = "";
         this.phoneNumber = "";
@@ -21,8 +20,7 @@ public class Contact
 
     public Contact(String firstName, String lastName, String phoneNumber, String address, String email)
     {
-        // Value of id becomes the next available number
-        this.id = nextId++;
+        this.id = nextId++;             // Value of id becomes the next available number
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;

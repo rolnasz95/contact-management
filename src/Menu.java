@@ -6,6 +6,10 @@ public class Menu
     private final InputValidation validation = new InputValidation();   // Used for input validation
     private final ContactManager manager = new ContactManager();        // Used to perform operations based on menu choice
 
+    /**
+     * The mainMenuOptions method displays available menu options for the user
+     * @param contacts the HashMap to store and retrieve Contact objects
+     */
     public void mainMenuOptions(HashMap<Integer, Contact> contacts)
     {
         boolean running = true;     // Control variable for the main menu
