@@ -3,16 +3,16 @@ import java.util.Scanner;
 
 public class Menu
 {
-    private final InputValidation validation = new InputValidation();
-    private final ContactManager manager = new ContactManager();
+    private final InputValidation validation = new InputValidation();   // Used for input validation
+    private final ContactManager manager = new ContactManager();        // Used to perform operations based on menu choice
 
-    public void menuOptions(HashMap<Integer, Contact> contacts)
+    public void mainMenuOptions(HashMap<Integer, Contact> contacts)
     {
-        boolean running = true;
+        boolean running = true;     // Control variable for the main menu
 
         while (running)
         {
-            displayOptions();
+            displayMainMenu();
 
             Scanner keyboard = new Scanner(System.in);
             System.out.print("Enter your choice: ");
@@ -49,7 +49,7 @@ public class Menu
         }
     }
 
-    private void displayOptions()
+    private void displayMainMenu()
     {
         System.out.println("1. Create new contact\t\t\t2. Delete existing contact");
         System.out.println("3. Search for contact by ID\t\t4. Display all contacts");

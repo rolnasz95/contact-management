@@ -9,6 +9,6 @@ public class Main
 
         Menu menu = new Menu();
 
-        menu.menuOptions(contacts);
+        menu.mainMenuOptions(contacts);
     }
 }
