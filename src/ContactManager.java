@@ -92,36 +92,17 @@ public class ContactManager
 
     public void importContacts(HashMap<Integer, Contact> contacts)
     {
-        ContactManager manager = new ContactManager();
-
-        String line;
-        String delimiter = ",";
-
         if (!contacts.isEmpty())
         {
             Scanner keyboard = new Scanner(System.in);
             System.out.print("List is not empty. Do you want to import and overwrite existing list? (Y/N): ");
-            String choice = keyboard.nextLine();
-            choice = choice.toLowerCase();
+            String choice = keyboard.nextLine().toLowerCase();
 
             if (choice.charAt(0) == 'y')
             {
-                File file = new File("resources/preloaded_contacts.csv");
+                contacts.clear();
 
-                try (BufferedReader reader = new BufferedReader(new FileReader(file)))
-                {
-                    while ((line = reader.readLine()) != null)
-                    {
-                        String[] contactList = line.split(delimiter);
-                        Contact contact = manager.createContact(contactList);
-
-                        contacts.put(contact.getID(), contact);
-                    }
-                }
-                catch (IOException e)
-                {
-                    System.out.println(e.getMessage());
-                }
+                readFile(contacts);
             }
             else
             {
@@ -130,21 +111,7 @@ public class ContactManager
         }
         else
         {
-            File file = new File("resources/preloaded_contacts.csv");
-            try (BufferedReader reader = new BufferedReader(new FileReader(file)))
-            {
-                while ((line = reader.readLine()) != null)
-                {
-                    String[] contactList = line.split(delimiter);
-                    Contact contact = manager.createContact(contactList);
-
-                    contacts.put(contact.getID(), contact);
-                }
-            }
-            catch (IOException e)
-            {
-                System.out.println(e.getMessage());
-            }
+            readFile(contacts);
 
             System.out.println("Successfully loaded the contacts into the program.");
         }
@@ -200,5 +167,33 @@ public class ContactManager
         }
 
         return false;
+    }
+
+    private void readFile(HashMap<Integer, Contact> contacts)
+    {
+        ContactManager manager = new ContactManager();
+
+        Scanner keyboard = new Scanner(System.in);
+        System.out.print("Specify a path: ");
+        String path = keyboard.nextLine();
+
+        String line;
+        String delimiter = ",";
+
+        File file = new File(path);
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file)))
+        {
+            while ((line = reader.readLine()) != null)
+            {
+                String[] contactList = line.split(delimiter);
+                Contact contact = manager.createContact(contactList);
+                manager.add(contact, contacts);
+            }
+        }
+        catch (IOException e)
+        {
+            System.out.println(e.getMessage());
+        }
     }
 }
