@@ -4,6 +4,8 @@ import java.util.Scanner;
 
 public class ContactManager
 {
+    private final InputValidation validation = new InputValidation();
+
     public void add(Contact contact, HashMap<Integer, Contact> contacts)
     {
         contacts.put(contact.getID(), contact);
@@ -15,27 +17,37 @@ public class ContactManager
         System.out.print("Specify an ID: ");
         int id = keyboard.nextInt();
 
+        Contact contactToRemove = new Contact();
+
         if (searchContact(id, contacts))
         {
             for (Contact contact : contacts.values())
             {
                 if (contact.getID() == id)
                 {
-                    System.out.println("Removing: " + contact.getName());
-                    contacts.remove(id, contact);
+                    contactToRemove = contact;
                 }
+            }
+
+            if (validation.confirmAction())
+            {
+                System.out.println("Removing " + contactToRemove.getName());
+                contacts.remove(contactToRemove.getID(), contactToRemove);
+            }
+            else
+            {
+                System.out.println("Returning to main menu.");
             }
         }
         else
         {
             System.out.println("Could not find contact with that ID. Try again.");
+            remove(contacts);
         }
     }
 
     public Contact createContact()
     {
-        InputValidation validation = new InputValidation();
-
         Scanner keyboard = new Scanner(System.in);
         Contact contact = new Contact();
 
@@ -200,11 +212,15 @@ public class ContactManager
 
     private void readFile(HashMap<Integer, Contact> contacts)
     {
-        ContactManager manager = new ContactManager();
-
         Scanner keyboard = new Scanner(System.in);
         System.out.print("Specify a path: ");
         String path = keyboard.nextLine();
+
+        while (!validation.validateFileFormat(path))
+        {
+            System.out.print("Only .csv files are accepted: ");
+            path = keyboard.nextLine();
+        }
 
         String line;
         String delimiter = ",";
@@ -216,8 +232,8 @@ public class ContactManager
             while ((line = reader.readLine()) != null)
             {
                 String[] contactList = line.split(delimiter);
-                Contact contact = manager.createContact(contactList);
-                manager.add(contact, contacts);
+                Contact contact = createContact(contactList);
+                add(contact, contacts);
             }
         }
         catch (IOException e)

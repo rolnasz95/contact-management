@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class InputValidation
 {
     public boolean validateName(String name)
@@ -7,23 +9,25 @@ public class InputValidation
 
     public boolean validateEmail(String email)
     {
-        char[] array = email.toLowerCase().toCharArray();
-
-        int atCount = 0;
-
-        for (char ch : array)
-        {
-            if (ch == '@')
-            {
-                atCount++;
-            }
-        }
-
-        return email.contains("@") && email.contains(".") && atCount == 1;
+        return email.matches("^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
     }
 
     public boolean validatePhone(String phone)
     {
-        return phone.length() == 12 && phone.charAt(3) == '-' && phone.charAt(7) == '-';
+        return phone.matches("^\\d{3}+-\\d{3}+-\\d{4}$");
+    }
+
+    public boolean validateFileFormat(String path)
+    {
+        return path.matches(".*\\.csv$");
+    }
+
+    public boolean confirmAction()
+    {
+        Scanner keyboard = new Scanner(System.in);
+        System.out.print("Do you want to proceed? (Y/N): ");
+        String input = keyboard.nextLine();
+
+        return input.toLowerCase().charAt(0) == 'y';
     }
 }
