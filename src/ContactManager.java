@@ -6,16 +6,16 @@ public class ContactManager
 {
     private final InputValidation validation = new InputValidation();
 
-    public void add(Contact contact, HashMap<Integer, Contact> contacts)
+    public void addContact(Contact contact, HashMap<Integer, Contact> contacts)
     {
         contacts.put(contact.getID(), contact);
     }
 
-    public void remove(HashMap<Integer, Contact> contacts)
+    public void removeContact(HashMap<Integer, Contact> contacts)
     {
         Scanner keyboard = new Scanner(System.in);
         System.out.print("Specify an ID: ");
-        int id = keyboard.nextInt();
+        int id = validation.validateInteger(keyboard);
 
         Contact contactToRemove = new Contact();
 
@@ -42,7 +42,7 @@ public class ContactManager
         else
         {
             System.out.println("Could not find contact with that ID. Try again.");
-            remove(contacts);
+            removeContact(contacts);
         }
     }
 
@@ -179,7 +179,7 @@ public class ContactManager
         Scanner keyboard = new Scanner(System.in);
 
         System.out.print("Enter a contact ID: ");
-        int id = keyboard.nextInt();
+        int id = validation.validateInteger(keyboard);
 
         for (Contact contact : contacts.values())
         {
@@ -233,7 +233,7 @@ public class ContactManager
             {
                 String[] contactList = line.split(delimiter);
                 Contact contact = createContact(contactList);
-                add(contact, contacts);
+                addContact(contact, contacts);
             }
         }
         catch (IOException e)

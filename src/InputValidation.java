@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class InputValidation
@@ -29,5 +30,21 @@ public class InputValidation
         String input = keyboard.nextLine();
 
         return input.toLowerCase().charAt(0) == 'y';
+    }
+
+    public int validateInteger(Scanner keyboard)
+    {
+        while (true)
+        {
+            try
+            {
+                return keyboard.nextInt();
+            }
+            catch (InputMismatchException e)
+            {
+                System.out.print("Invalid input. Try again: ");
+                keyboard.next();
+            }
+        }
     }
 }

@@ -3,14 +3,11 @@ import java.util.Scanner;
 
 public class Menu
 {
-    public Menu()
-    {
-    }
+    private final InputValidation validation = new InputValidation();
+    private final ContactManager manager = new ContactManager();
 
     public void menuOptions(HashMap<Integer, Contact> contacts)
     {
-        ContactManager manager = new ContactManager();
-
         boolean running = true;
 
         while (running)
@@ -19,16 +16,16 @@ public class Menu
 
             Scanner keyboard = new Scanner(System.in);
             System.out.print("Enter your choice: ");
-            int choice = keyboard.nextInt();
+            int choice = validation.validateInteger(keyboard);
 
             switch (choice)
             {
                 case 1:
                     Contact contact = manager.createContact();
-                    manager.add(contact, contacts);
+                    manager.addContact(contact, contacts);
                     break;
                 case 2:
-                    manager.remove(contacts);
+                    manager.removeContact(contacts);
                     break;
                 case 3:
                     System.out.println(manager.searchContact(contacts));
