@@ -1,5 +1,7 @@
+package main;
+
 import java.io.*;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Scanner;
 
 /**
@@ -7,37 +9,36 @@ import java.util.Scanner;
  */
 public class ContactManager
 {
-    // Used for accessing input validation methods the user enters
-    private final InputValidation validation = new InputValidation();
+    private LinkedHashMap<Integer, Contact> contacts = new LinkedHashMap<>();   // Contact object will be stored in the HashMap
+
+    private final InputValidation validation = new InputValidation();   // Used for accessing input validation methods the user enters
 
     /**
      * The addContact method adds a new Contact object to the contacts HashMap
      * @param contact the contact to add to the HashMap
-     * @param contacts the HashMap to add the contact to using its built-in put() method
      */
-    public void addContact(Contact contact, HashMap<Integer, Contact> contacts)
+    public void addContact(Contact contact)
     {
         contacts.put(contact.getID(), contact);
     }
 
     /**
      * The removeContact method removes a Contact object from the HashMap
-     * @param contacts the HashMap to remove the contact from
      */
-    public void removeContact(HashMap<Integer, Contact> contacts)
+    public void removeContact()
     {
         // Create Scanner object that will be used for input
         Scanner keyboard = new Scanner(System.in);
         System.out.print("Specify an ID: ");
 
-        // After validating the input is valid store the value in the id variable
+        // After validating the input store the value in the id variable
         int id = validation.validateInteger(keyboard);
 
-        // Contact object to store the contact that is to be removed
+        // Create new object to store the contact that is to be removed
         Contact contactToRemove = new Contact();
 
         // Verify if contact exists
-        if (searchContact(id, contacts))
+        if (searchContact(id))
         {
             // Search the HashMap for the given key (which is the ID)
             for (Contact contact : contacts.values())
@@ -129,9 +130,8 @@ public class ContactManager
 
     /**
      * The exportContacts method will write all Contact object info into a file
-     * @param contacts the HashMap to read Contact objects from
      */
-    public void exportContacts(HashMap<Integer, Contact> contacts)
+    public void exportContacts()
     {
         // If HashMap is empty return to main menu
         if (contacts.isEmpty())
@@ -165,9 +165,8 @@ public class ContactManager
 
     /**
      * The importContacts method will create new Contact objects from the specified file and store them in a HashMap
-     * @param contacts the HashMap to store the Contact objects in
      */
-    public void importContacts(HashMap<Integer, Contact> contacts)
+    public void importContacts()
     {
         // Checks to see if HashMap is empty and asks for confirmation to overwrite existing data
         if (!contacts.isEmpty())
@@ -182,7 +181,7 @@ public class ContactManager
             {
                 contacts.clear();
 
-                readFile(contacts);
+                readFile();
             }
             else
             {
@@ -192,7 +191,7 @@ public class ContactManager
         // If HashMap is empty call the readFile method to read data from a file and write it to the HashMap
         else
         {
-            readFile(contacts);
+            readFile();
 
             System.out.println("Successfully loaded the contacts into the program.");
         }
@@ -200,9 +199,8 @@ public class ContactManager
 
     /**
      * The displayContacts method will print all contact info to the console
-     * @param contacts the HashMap to read the contacts from
      */
-    public void displayContacts(HashMap<Integer, Contact> contacts)
+    public void displayContacts()
     {
         // If HashMap is empty return to main menu
         if (contacts.isEmpty())
@@ -222,10 +220,9 @@ public class ContactManager
 
     /**
      * The searchContact method will retrieve and display the specified Contact object to the console
-     * @param contacts the HashMap to get the Contact object from
      * @return the toString method of the retrieved object or indicate if the search failed
      */
-    public String searchContact(HashMap<Integer, Contact> contacts)
+    public String searchContact()
     {
         // Create Scanner object that will be used for input
         Scanner keyboard = new Scanner(System.in);
@@ -248,23 +245,89 @@ public class ContactManager
         return "Could not find contact with ID #" + id;
     }
 
+
     /**
-     * The createContact private method is used to create new Contact objects from a String array
-     * @param contactList the String array to create Contact objects from
-     * @return a new Contact object
+     * The changePhone method will change the phoneNumber field for the selected Contact object
+     * @param id the id for the Contact
      */
-    private Contact createContact(String[] contactList)
+    public void changePhone(int id)
     {
-        return new Contact(contactList[0], contactList[1], contactList[2], contactList[3], contactList[4]);
+        Scanner keyboard = new Scanner(System.in);
+
+        for (Contact contact : contacts.values())
+        {
+            if (contact.getID() == id)
+            {
+                System.out.print("Enter new phone number: ");
+                String phone = keyboard.nextLine();
+
+                while (!validation.validatePhone(phone))
+                {
+                    System.out.print("Invalid number. Format must be XXX-XXX-XXXX: ");
+                    phone = keyboard.nextLine();
+                }
+
+                contact.setPhoneNumber(phone);
+                System.out.println("Successfully set new phone number for " + contact.getName());
+            }
+        }
     }
 
     /**
-     * The searchContact private method is used to look up a specified key-value pair from the HashMap
+     * The changeAddress method will change the address field for the selected Contact object
+     * @param id the id for the Contact
+     */
+    public void changeAddress(int id)
+    {
+        Scanner keyboard = new Scanner(System.in);
+
+        for (Contact contact : contacts.values())
+        {
+            if (contact.getID() == id)
+            {
+                System.out.print("Enter new address: ");
+                String address = keyboard.nextLine();
+
+                contact.setAddress(address);
+
+                System.out.println("Successfully set new address for " + contact.getName());
+            }
+        }
+    }
+
+    /**
+     * The changeEmail method will change the address field for the selected Contact object
+     * @param id the id for the contact
+     */
+    public void changeEmail(int id)
+    {
+        Scanner keyboard = new Scanner(System.in);
+
+        for (Contact contact : contacts.values())
+        {
+            if (contact.getID() == id)
+            {
+                System.out.print("Enter new email: ");
+                String email = keyboard.nextLine();
+
+                while (!validation.validateEmail(email))
+                {
+                    System.out.print("Invalid email. Try again: ");
+                    email = keyboard.nextLine();
+                }
+
+                contact.setEmail(email);
+                System.out.println("Successfully set new email for " + contact.getName());
+            }
+        }
+    }
+
+    /**
+     * The searchContact method is used to look up a specified key-value pair from the HashMap
      * @param id the key that is used to search the HashMap
-     * @param contacts the HashMap to search
      * @return true if found
      */
-    private boolean searchContact(int id, HashMap<Integer, Contact> contacts)
+    public boolean searchContact(int id)
     {
         for (Contact contact : contacts.values())
         {
@@ -278,10 +341,19 @@ public class ContactManager
     }
 
     /**
-     * The readFile private method is used to read a user specified file
-     * @param contacts the HashMap to store the data in
+     * The createContact private method is used to create new Contact objects from a String array
+     * @param contactList the String array to create Contact objects from
+     * @return a new Contact object
      */
-    private void readFile(HashMap<Integer, Contact> contacts)
+    private Contact createContact(String[] contactList)
+    {
+        return new Contact(contactList[0], contactList[1], contactList[2], contactList[3], contactList[4]);
+    }
+
+    /**
+     * The readFile private method is used to read a user specified file
+     */
+    private void readFile()
     {
         // Create Scanner object that will be used for input
         Scanner keyboard = new Scanner(System.in);
@@ -307,7 +379,7 @@ public class ContactManager
             {
                 String[] contactList = line.split(delimiter);   // This will store each value split by the delimiter
                 Contact contact = createContact(contactList);   // Create new Contact object based on the data retrieved
-                addContact(contact, contacts);                  // Add the Contact object to the HashMap
+                addContact(contact);                  // Add the Contact object to the HashMap
             }
         }
         catch (IOException e)
