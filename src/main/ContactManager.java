@@ -9,9 +9,9 @@ import java.util.Scanner;
  */
 public class ContactManager
 {
-    private LinkedHashMap<Integer, Contact> contacts = new LinkedHashMap<>();   // Contact object will be stored in the HashMap
+    private LinkedHashMap<Integer, Contact> contacts = new LinkedHashMap<>();   // Contact objects will be stored in the HashMap
 
-    private final InputValidation validation = new InputValidation();   // Used for accessing input validation methods the user enters
+    private final InputValidation validation = new InputValidation();   // Used for accessing input validation methods
 
     /**
      * The addContact method adds a new Contact object to the contacts HashMap
@@ -140,27 +140,31 @@ public class ContactManager
             return;
         }
 
-        File file = new File("resources/contacts.csv");
+        Scanner keyboard = new Scanner(System.in);
+        System.out.print("Specify a path: ");
+        String path = keyboard.nextLine();
 
-        // Write each Contact object into the specified file in CSV format
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file)))
+        while (!validation.validateFileFormat(path))
         {
-            for (Contact contact : contacts.values())
+            System.out.print("File must end with a .csv extension: ");
+            path = keyboard.nextLine();
+        }
+
+        File file = new File(path);
+
+        if (file.exists())
+        {
+            System.out.print("That file already exists, you will overwrite any existing content. ");
+
+            if (validation.confirmAction())
             {
-                writer.write(contact.getFirstName() + ",");
-                writer.write(contact.getLastName() + ",");
-                writer.write(contact.getPhoneNumber() + ",");
-                writer.write(contact.getAddress() + ",");
-                writer.write(contact.getEmail());
-                writer.newLine();
+                writeFile(file);
             }
         }
-        catch (IOException e)
+        else
         {
-            System.out.println(e.getMessage());
+            writeFile(file);
         }
-
-        System.out.println("Contacts written successfully.");
     }
 
     /**
@@ -379,8 +383,35 @@ public class ContactManager
             {
                 String[] contactList = line.split(delimiter);   // This will store each value split by the delimiter
                 Contact contact = createContact(contactList);   // Create new Contact object based on the data retrieved
-                addContact(contact);                  // Add the Contact object to the HashMap
+                addContact(contact);                            // Add the Contact object to the HashMap
             }
+        }
+        catch (IOException e)
+        {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    /**
+     * The writeFile private method is used to write Contact objects from the HashMap to a file
+     * @param file the file to write the objects to
+     */
+    private void writeFile(File file)
+    {
+        // Write each Contact object into the specified file in CSV format
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file)))
+        {
+            for (Contact contact : contacts.values())
+            {
+                writer.write(contact.getFirstName() + ",");
+                writer.write(contact.getLastName() + ",");
+                writer.write(contact.getPhoneNumber() + ",");
+                writer.write(contact.getAddress() + ",");
+                writer.write(contact.getEmail());
+                writer.newLine();
+            }
+
+            System.out.println("Contacts written successfully.");
         }
         catch (IOException e)
         {
